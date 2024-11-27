@@ -91,13 +91,15 @@ var add = function (x, y) {
 
 #### 12.4.3 함수 생성 시점과 함수 호이스팅
 ```js
+// var sub; <변수 호이스팅 - undefined>
+
 // 함수 참조
 console.dir(add); // f add(x, y)
 console.dir(sub); // undefined
 
 // 함수 호출
 console.log(add(2, 5)); // 7
-console.log(add(2, 5)); // TypeError: sub is not a function
+console.log(sub(2, 5)); // TypeError: sub is not a function
 
 // 함수 선언문
 function add(x, y) {
@@ -117,4 +119,5 @@ var sub = function (x, y) {
 
 - **함수 표현식 호이스팅**
   - 함수 표현식으로 함수를 정의하면 함수 호이스팅이 발생하는 것이 아니라 `변수 호이스팅`이 발생한다.
-  - var 키워도르 선언된 변수(sub)는 undefined 초기화되지만 함수 리터럴은 런타임에 평가되어 함수 객체가 되기 때문이다.
+  - 선언된 변수(sub)는 런타임 이전에 undefined 로 초기화되지만 함수 리터럴은 런타임 시점에 평가되어 함수 객체를 생성한다.
+  - 따라서, 함수 표현식 이전에 함수를 참조하면 undefined 로 평가되어 함수 호출 시 타입 에러가 발생한다.
