@@ -79,3 +79,40 @@ function Circle(radius) {
 <br />
 
 #### 17.2.4 내부 메서드 [[Call]] 과 [[Construct]]
+- 함수 객체는 일반 객체가 가지고 있는 내부 슬롯과 내부 메서드를 갖는다.
+- 함수 객체는 일반 객체와는 다르며, 일반 객체는 호출할 수 없지만 함수 객체는 호출할 수 있다.
+- 따라서 함수 객체는 [[Environment]], [[FormalParameters]] 등의 내부 슬롯과 [[Call]], [[Construct]] 같은 내부 메서드를 추가적으로 갖는다.
+- 함수가 일반 함수로서 호출되면 함수 객체의 내부 메서드 [[Call]]이 호출되고 new 연산자와 함께 생성자 함수로서 호출되면 내부 메서드 [[Construct]] 가 호출된다.
+
+
+- 내부 메서드 [[Call]] 을 갖는 함수 객체를 callable 이라 하며, 호출할 수 있는 함수를 말한다.
+- 내부 메서드 [[Construct]] 을 갖는 함수 객체를 constructor 이라 하며, 생성자 함수로서 호출할 수 있는 함수를 말한다.
+- 내부 메서드 [[Construct]] 을 갖지 않는 함수 객체를 non-constructor 이라 하며, 생성자 함수로서 호출할 수 없는 함수를 말한다.
+
+
+- 함수 객체는 callable 이면서 constructor 이거나 callable 이면서 non-constructor 한 것을 의미한다.
+- 즉, 모든 함수 객체는 호출(callable)할 수 있지만 모든 함수 객체를 생성자 함수(constructor)로서 호출할 수 있는 것은 아니다.
+
+<br />
+
+#### 17.2.5 constructor 와 non-constructor 의 구분
+- 자바스크립트 엔진은 함수 정의를 평가하여 함수 객체를 생성할 때 함수 정의 방식에 따라 함수를 constructor 와 non-constructor 로 구분한다.
+  - constructor : 함수 선언문, 함수 표현식, 클래스
+  - non-constructor : 메서드([ES6 메서드 축약 표현](https://github.com/darkmyu/note/tree/main/01_%EB%AA%A8%EB%8D%98_%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8_Deep_Dive/CH_10_%EA%B0%9D%EC%B2%B4_%EB%A6%AC%ED%84%B0%EB%9F%B4#1093-%EB%A9%94%EC%84%9C%EB%93%9C-%EC%B6%95%EC%95%BD-%ED%91%9C%ED%98%84)), 화살표 함수
+
+<br />
+
+#### 17.2.6 new 연산자
+- 일반 함수와 생성자 함수에 특별한 형식적 차이는 없다.
+- new 연산자와 함께 함수를 호출하면 해당 함수는 생성자 함수로 동작한다.
+- 단, new 연산자와 함께 호출하는 함수는 non-constructor 가 아닌 constructor 이어야 한다.
+- 또한, 일반 함수와 생성자 함수에 구분을 위해 첫 문자를 대문자로 기술하는 파스칼 케이스로 명명하도록 한다.
+
+<br />
+
+#### 17.2.7 new.target
+- ES6 에서는 생성자 함수가 new 연산자 없이 호출되는 것을 방지하기 위해 new.target 을 지원한다.
+- new.target 은 this 와 유사하게 constructor 인 모든 함수 내부에서 암묵적인 지역 변수와 같이 사용되며 메타 프로퍼티라고 부른다.
+- new 연산자와 함께 생성자 함수로서 호출되면 new.target 함수 자신을 가리키며, new 연산자 없이 일반 함수로서 호출되면 new.target 은 undefined 다.
+
+<br />
