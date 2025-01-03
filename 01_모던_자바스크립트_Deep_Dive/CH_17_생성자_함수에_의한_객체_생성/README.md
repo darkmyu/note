@@ -84,11 +84,13 @@ function Circle(radius) {
 - 따라서 함수 객체는 [[Environment]], [[FormalParameters]] 등의 내부 슬롯과 [[Call]], [[Construct]] 같은 내부 메서드를 추가적으로 갖는다.
 - 함수가 일반 함수로서 호출되면 함수 객체의 내부 메서드 [[Call]]이 호출되고 new 연산자와 함께 생성자 함수로서 호출되면 내부 메서드 [[Construct]] 가 호출된다.
 
+<br />
 
 - 내부 메서드 [[Call]] 을 갖는 함수 객체를 callable 이라 하며, 호출할 수 있는 함수를 말한다.
 - 내부 메서드 [[Construct]] 을 갖는 함수 객체를 constructor 이라 하며, 생성자 함수로서 호출할 수 있는 함수를 말한다.
 - 내부 메서드 [[Construct]] 을 갖지 않는 함수 객체를 non-constructor 이라 하며, 생성자 함수로서 호출할 수 없는 함수를 말한다.
 
+<br />
 
 - 함수 객체는 callable 이면서 constructor 이거나 callable 이면서 non-constructor 한 것을 의미한다.
 - 즉, 모든 함수 객체는 호출(callable)할 수 있지만 모든 함수 객체를 생성자 함수(constructor)로서 호출할 수 있는 것은 아니다.
