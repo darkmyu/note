@@ -76,7 +76,7 @@ obj.__proto__;
 
 // setter 함수인 set __proto__ 가 호출되어 obj 객체의 프로토타입을 교체
 obj.__proto__ = parent;
-- ```
+```
 
 - 모든 객체는 상속을 통해 Object.prototype.\__proto\__ 접근자 프로퍼티를 사용, 즉 \__proto\__ 접근자 프로퍼티는 객체가 직접 소유하는 프로퍼티가 아니라 Object.prototype 의 프로퍼티다.
 
