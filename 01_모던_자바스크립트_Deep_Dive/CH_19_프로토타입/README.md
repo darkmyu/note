@@ -66,6 +66,7 @@ Circle.prototype.getArea = function() {
 #### 19.3.1 \__proto\__ 접근자 프로퍼티
 - 모든 객체는 \__proto\__ 접근자 프로퍼티를 통해 자신의 프로토타입, 즉 [[Prototype]] 내부 슬롯에 간접적으로 접근할 수 있다.
 - \__proto\__ 는 getter/setter 함수라고 부르는 접근자 함수([[Get]], [[Set]] 프로퍼티 어트리뷰트에 할당된 함수)를 통해 [[Prototype]] 내부 슬롯의 값, 즉 프로토타입을 취득하거나 할당한다.
+
 ```js
 const obj = {};
 const parent = { x: 1 };
@@ -78,6 +79,7 @@ obj.__proto__ = parent;
 - ```
 
 - 모든 객체는 상속을 통해 Object.prototype.\__proto\__ 접근자 프로퍼티를 사용, 즉 \__proto\__ 접근자 프로퍼티는 객체가 직접 소유하는 프로퍼티가 아니라 Object.prototype 의 프로퍼티다.
+
 ```js
 const person = { name: 'Lee' };
 
@@ -92,6 +94,7 @@ console.log({}.__proto__ === Object.prototype); // true
 ```
 
 - 프로토타입에 접근하기 위해 접근자 프로퍼티를 사용하는 이유는 상호 참조에 의해 프로토타입 체인이 생성되는 것을 방지하기 위해서다.
+
 ```js
 const parent = {};
 const child = {};
@@ -102,5 +105,6 @@ child.__proto__ = parent;
 // parent 의 프로토타입을 child 로 설정
 parent.__proto__ = child; // TypeError: Cyclic __proto__ value
 ```
+
 ![19-6](https://github.com/user-attachments/assets/35e36e4c-f2ee-44e5-8293-195379970b96)
 
