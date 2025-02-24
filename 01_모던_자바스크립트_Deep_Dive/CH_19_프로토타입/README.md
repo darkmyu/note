@@ -56,16 +56,16 @@ Circle.prototype.getArea = function() {
 - 프로토타입 객체는 객체지향 프로그래밍의 근간을 이루는 객체 간 상속을 구현하기 위해 사용된다.
 - 모든 객체는 [[Prototype]]  이라는 내부 슬롯을 가지며, 저장되는 프로토타입은 객체 생성 방식에 의해 결정된다.
 - 모든 객체는 하나의 프로토타입을 가지며, 모든 프로토타입은 생성자 함수와 연결되어 있다.
-  - \__proto\__ 접근자 프로퍼티를 통해 자신의 [[Prototype]] 내부 슬롯이 가리키는 프로토타입에 간접적으로 접근할 수 있다.
+  - \_\_proto\_\_ 접근자 프로퍼티를 통해 자신의 [[Prototype]] 내부 슬롯이 가리키는 프로토타입에 간접적으로 접근할 수 있다.
   - constructor 프로퍼티를 통해 생성자 함수에 접근할 수 있고, 생성자 함수는 자신의 prototype 프로퍼티를 통해 프로토타입에 접근할 수 있다.
 
 ![19-3](https://github.com/user-attachments/assets/aea50e3c-7e67-4af8-b36d-94f2e386b50b)
 
 <br />
 
-#### 19.3.1 \__proto\__ 접근자 프로퍼티
-- 모든 객체는 \__proto\__ 접근자 프로퍼티를 통해 자신의 프로토타입, 즉 [[Prototype]] 내부 슬롯에 간접적으로 접근할 수 있다.
-- \__proto\__ 는 getter/setter 함수라고 부르는 접근자 함수([[Get]], [[Set]] 프로퍼티 어트리뷰트에 할당된 함수)를 통해 [[Prototype]] 내부 슬롯의 값, 즉 프로토타입을 취득하거나 할당한다.
+#### 19.3.1 \_\_proto\_\_ 접근자 프로퍼티
+- 모든 객체는 \_\_proto\_\_ 접근자 프로퍼티를 통해 자신의 프로토타입, 즉 [[Prototype]] 내부 슬롯에 간접적으로 접근할 수 있다.
+- \_\_proto\_\_ 는 getter/setter 함수라고 부르는 접근자 함수([[Get]], [[Set]] 프로퍼티 어트리뷰트에 할당된 함수)를 통해 [[Prototype]] 내부 슬롯의 값, 즉 프로토타입을 취득하거나 할당한다.
 
 ```js
 const obj = {};
@@ -78,7 +78,9 @@ obj.__proto__;
 obj.__proto__ = parent;
 ```
 
-- 모든 객체는 상속을 통해 Object.prototype.\__proto\__ 접근자 프로퍼티를 사용, 즉 \__proto\__ 접근자 프로퍼티는 객체가 직접 소유하는 프로퍼티가 아니라 Object.prototype 의 프로퍼티다.
+<br />
+
+- 모든 객체는 상속을 통해 Object.prototype.\_\_proto\_\_ 접근자 프로퍼티를 사용, 즉 \_\_proto\_\_ 접근자 프로퍼티는 객체가 직접 소유하는 프로퍼티가 아니라 Object.prototype 의 프로퍼티다.
 
 ```js
 const person = { name: 'Lee' };
@@ -92,6 +94,8 @@ console.log(Object.getOwnPropertyDescriptor(Object.prototype, '__proto__'));
 // 모든 객체는 Object.prototype 의 접근자 프로퍼티 __proto__ 를 상속받아 사용할 수 있다.
 console.log({}.__proto__ === Object.prototype); // true
 ```
+
+<br />
 
 - 프로토타입에 접근하기 위해 접근자 프로퍼티를 사용하는 이유는 상호 참조에 의해 프로토타입 체인이 생성되는 것을 방지하기 위해서다.
 
@@ -108,3 +112,57 @@ parent.__proto__ = child; // TypeError: Cyclic __proto__ value
 
 ![19-6](https://github.com/user-attachments/assets/35e36e4c-f2ee-44e5-8293-195379970b96)
 
+<br />
+
+- \_\_proto\_\_ 접근자 프로퍼티를 코드 내에서 직접 사용하는 것은 권장하지 않는다.
+- [19.11절 "직접 상속"](URL) 을 통해 Object.prototype 을 상속받지 않는 객체를 생성할 수도 있기 때문에 \_\_proto\_\_ 접근자 프로퍼티를 사용할 수 없는 경우가 있다.
+- 따라서 프로토타입의 참조를 취득하고 싶은 경우에는 Object.getprototypeOf 메서드를 사용하고, 프로토타입을 교체하고 싶은 경우에는 Object.setPrototypeOf 메서드를 사용할 것을 권장한다.
+
+```js
+// obj 는 프로토타입 체인의 종접으로 Object.__proto__ 를 상속받을 수 없다.
+const obj = Object.create(null);
+
+console.log(obj.__proto__); // undefined
+console.log(Object.getPrototypeOf(obj)); // null
+```
+
+<br />
+
+#### 19.3.2 함수 객체의 prototype 프로퍼티
+- 함수 객체만이 소유하는 prototype 프로퍼티는 생성자 함수가 생성할 인스턴스의 프로토타입을 가리킨다.
+- 생성자 함수로서 호출할 수 없는, 즉 non-constructor([17.2.5절 "constructor 와 non-constructor 의 구분](https://github.com/darkmyu/note/tree/main/01_%EB%AA%A8%EB%8D%98_%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8_Deep_Dive/CH_17_%EC%83%9D%EC%84%B1%EC%9E%90_%ED%95%A8%EC%88%98%EC%97%90_%EC%9D%98%ED%95%9C_%EA%B0%9D%EC%B2%B4_%EC%83%9D%EC%84%B1#1725-constructor-%EC%99%80-non-constructor-%EC%9D%98-%EA%B5%AC%EB%B6%84)) 인 화살표 함수와 ES6 메서드 축약 표현으로 정의한 메서드는 prototype 프로퍼티를 소유하지 않으며 프로토타입도 생성하지 않는다.
+- Object.prototype 으로부터 상속받은 \_\_proto\_\_ 접근자 프로퍼티와 함수 객체만이 가지고 있는 prototype 프로퍼티는 결국 동일한 프로토타입을 가리킨다.
+
+```js
+function Person(name) {
+  this.name = name;
+}
+
+const person = new Person('Min');
+console.log(Person.prototype === person.__proto__); // true
+```
+
+| 구분                          | 소유          | 값         | 사용 주체  | 사용 목적                                       |
+|-----------------------------|-------------|-----------|--------|---------------------------------------------|
+| \_\_proto\_\_<br />접근자 프로퍼티 | 모든 객체       | 프로토타입의 참조 | 모든 객체  | 객체가 자신의 프로토타입에 접근 또는 교체하기 위해 사용             |
+| prototype<br />프로퍼티         | constructor | 프로토타입의 참조 | 생성자 함수 | 생성자 함수가 자신이 생성할 객체(인스턴스)의 프로토타입을 할당하기 위해 사용 |
+
+![19-7](https://github.com/user-attachments/assets/fd9c6a3a-bab1-4ca4-8571-f4234ec365b4)
+
+<br />
+
+#### 19.3.3 프로토타입의 constructor 프로퍼티와 생성자 함수
+- 모든 프로토타입은 constructor 프로퍼티를 가지며, prototype 프로퍼티로 자신을 참조하고 있는 생성자 함수를 가리킨다.
+
+```js
+function Person(name) {
+  this.name = name;
+}
+
+const person = new Person('Min');
+console.log(person.constructor === Person); // true
+```
+
+![19-8](https://github.com/user-attachments/assets/4eb812ff-4be2-4b39-b632-5e15e1c721ff)
+
+<br />
