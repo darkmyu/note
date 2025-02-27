@@ -166,3 +166,34 @@ console.log(person.constructor === Person); // true
 ![19-8](https://github.com/user-attachments/assets/4eb812ff-4be2-4b39-b632-5e15e1c721ff)
 
 <br />
+
+#### 19.4 리터럴 표기법에 의해 생성된 객체의 생성자 함수와 프로토타입
+- 리터럴 표기법에 의한 객체 생성 방식과 같이 명시적으로 new 연산자와 함께 생성자 함수를 호출하여 인스턴스를 생성하지 않는 객체 생성 방식도 있다.
+- 리터럴 표기법에 의해 생성된 객체의 경우 프로토타입의 constructor 프로퍼티가 가리키는 생성자 함수가 반드시 객체를 생성한 생성자 함수라고 단정할 수는 없다.
+
+<br />
+
+```js
+// obj 객체는 객체 리터럴로 생성했다.
+const obj = {};
+
+// 하지만 obj 객체는 Object 생성자 함수와 constructor 프로퍼티로 연결되어 있다.
+console.log(obj.constructor === Object); // true
+```
+
+- 하지만 위 예제의 obj 는 객체 리터럴에 의해 생성된 객체이지만 Object 생성자 함수와 constructor 프로퍼티로 연결되어 있는 이유는 뭘까?
+  - ECMAScript 사양에서는 아래와 같이 정의하고 있다.
+  - 객체 리터럴이 평가될 때는 추상 연산 [OrdinaryObjectCreate](https://tc39.es/ecma262/#sec-object-initializer-runtime-semantics-evaluation) 을 호출하여 빈 객체를 생성하고 프로퍼티를 추가한다.
+  - Object 생성자 함수에 인수를 전달하지 않거나 undefined, null 을 인수로 전달하면서 호출하면 내부적으로는 추상 연산 [OrdinaryObjectCreate](https://tc39.es/ecma262/#sec-object-value) 를 호출하여 Object.prototype 을 프로토타입으로 갖는 빈 객체를 생성한다.
+
+<br />
+
+- 이처럼 Object 생성자 함수 호출과 객체 리터럴의 평가는 추상 연산 OrdinaryObjectCreate 를 호출하여 빈 객체를 생성하는 점은 동일하다.
+- 하지만 new.target 의 확인이나 프로퍼티를 추가하는 처리 등 세부 내용은 달라 객체 리터럴에 의해 생성된 객체는 Object 생성자 함수가 생성한 객체가 아니다.
+
+<br />
+
+- 즉, 리터럴 표기법에 의해 생성된 객체도 상속을 위해 프로토타입이 필요하여 가상적인 생성자 함수를 갖는다.
+- 프로토타입은 생성자 함수와 더불어 생성되며 prototype, constructor 프로퍼티에 의해 연결되어 있기 때문이다.
+
+<br />
